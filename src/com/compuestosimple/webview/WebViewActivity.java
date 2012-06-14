@@ -39,20 +39,20 @@ public class WebViewActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        String id;
+        String item_id;
 
         switch (item.getItemId()) {
             case R.id.close:
-                id = "close";
+                item_id = "close";
             break;
             case R.id.help:
-                id = "help";
+                item_id = "help";
             break;
             default:
                 return super.onOptionsItemSelected(item);
         }
 
-        mWebView.loadUrl("javascript:extern.fireDOMEvent('menuitem', { item: '" + id + "' });");
+        mWebView.loadUrl("javascript:extern.fireDOMEvent('menuitem', { item: '" + item_id + "' });");
         return true;
     }
 
