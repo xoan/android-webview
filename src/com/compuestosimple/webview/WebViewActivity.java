@@ -15,19 +15,19 @@ import android.widget.Toast;
 
 public class WebViewActivity extends Activity {
 
-    protected WebView mWebView;
+    protected WebView myWebView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        mWebView = (WebView) findViewById(R.id.webview);
-        mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.addJavascriptInterface(new JavascriptInterface(this), "intern");
-        mWebView.setWebChromeClient(new MyWebChromeClient());
-        mWebView.setScrollBarStyle(WebView.SCROLLBARS_INSIDE_OVERLAY);
-        mWebView.loadUrl("file:///android_asset/index.html");
+        myWebView = (WebView) findViewById(R.id.webview);
+        myWebView.getSettings().setJavaScriptEnabled(true);
+        myWebView.addJavascriptInterface(new JavascriptInterface(this), "intern");
+        myWebView.setWebChromeClient(new MyWebChromeClient());
+        myWebView.setScrollBarStyle(WebView.SCROLLBARS_INSIDE_OVERLAY);
+        myWebView.loadUrl("file:///android_asset/index.html");
     }
 
     @Override
@@ -52,7 +52,7 @@ public class WebViewActivity extends Activity {
                 return super.onOptionsItemSelected(item);
         }
 
-        mWebView.loadUrl("javascript:extern.fireDOMEvent('menuitem', { item: '" + item_id + "' });");
+        myWebView.loadUrl("javascript:extern.fireDOMEvent('menuitem', { item: '" + item_id + "' });");
         return true;
     }
 
@@ -68,25 +68,25 @@ public class WebViewActivity extends Activity {
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            mWebView.loadUrl("javascript:extern.fireDOMEvent('backbutton');");
+            myWebView.loadUrl("javascript:extern.fireDOMEvent('backbutton');");
             return true;
         }
         return super.onKeyUp(keyCode, event);
     }
 
     private class JavascriptInterface {
-        private Context mContext;
+        private Context myContext;
 
         JavascriptInterface(Context context) {
-            mContext = context;
+            myContext = context;
         }
 
         public void finish() {
-            ((Activity) mContext).finish();
+            ((Activity) myContext).finish();
         }
 
         public void toast(String message) {
-            Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
+            Toast.makeText(myContext, message, Toast.LENGTH_LONG).show();
         }
     }
 
