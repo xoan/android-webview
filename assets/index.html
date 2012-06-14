@@ -1,0 +1,114 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, target-densitydpi=device-dpi, initial-scale=1.0, user-scalable=no">
+
+    <title>WebView</title>
+
+    <style type="text/css" charset="utf-8">
+        a {
+            font-weight: bold;
+            color: #fff;
+            background-color: #000;
+            text-decoration: none;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+
+        .help p {
+            font-size: small;
+            color: #3A87AD;
+            background-color: #D9EDF7;
+            padding: 8px 10px;
+            border: 1px solid #BCE8F1;
+            border-radius: 4px;
+        }
+
+        .hide {
+            display: none;
+        }
+    </style>
+
+    <script type="text/javascript" charset="utf-8" src="js/xui-2.3.2.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        xui.extend({
+            data: function(attribute, val) {
+                if (arguments.length == 2) {
+                    return this.each(function(el) {
+                        if (el.setAttribute) {
+                            el.setAttribute('data-' + attribute, val);
+                        }
+                    });
+                } else {
+                    var attrs = [];
+                    this.each(function(el) {
+                        if (el.getAttribute && el.getAttribute('data-' + attribute)) {
+                            attrs.push(el.getAttribute('data-' + attribute));
+                        }
+                    });
+                    return attrs;
+                }
+            }
+        });
+
+        xui.ready(function() {
+            x$(document).on("backbutton", function(event) {
+                intern.finish();
+            });
+
+            x$(document).on("menuitem", function(event) {
+                switch (event.data.item) {
+                    case "close":
+                        intern.finish();
+                    break;
+                    case "help":
+                        x$(".help").toggleClass("hide");
+                    break;
+                }
+            });
+
+            x$("a.toast").on("click", function(event) {
+                intern.toast(x$(this).data("message"));
+                event.preventDefault();
+            });
+
+            x$("a.exit").on("click", function(event) {
+                intern.finish();
+                event.preventDefault();
+            });
+        });
+
+        var extern = {
+            fireDOMEvent: function(event, data) {
+                x$(document).fire(event, data);
+            }
+        };
+    </script>
+</head>
+<body>
+    <section>
+        <article>
+            <p>
+                Sample hybrid app.
+            </p>
+
+            <ul>
+                <li>
+                    <a href="#" class="toast" data-message="Hello World">Show</a> a <tt>toast</tt> message
+                </li>
+                <li>
+                    There is a menu available by tapping <tt>menubutton</tt>
+                <li>
+                    Tap <tt>backbutton</tt> to <a href="#" class="exit">exit</a> (or use the <tt>close</tt> menu option)
+                </li>
+            </ul>
+
+            <aside class="help hide">
+                <p>
+                    This is a help message. Tap in the menu option again and it will disappear.
+                </p>
+            </aside>
+        </article>
+    </section>
+</body>
+</html>
