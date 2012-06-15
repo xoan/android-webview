@@ -62,7 +62,7 @@ public class WebViewActivity extends Activity {
                 return super.onOptionsItemSelected(item);
         }
 
-        myWebView.loadUrl("javascript:extern.fireDOMEvent('menuitem', { item: '" + item_id + "' });");
+        myWebView.loadUrl("javascript:extern.fireDOMEvent('menuitem', { item_id: '" + item_id + "' });");
         return true;
     }
 
