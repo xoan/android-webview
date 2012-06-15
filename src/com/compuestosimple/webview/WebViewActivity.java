@@ -10,12 +10,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebStorage.QuotaUpdater;
 import android.webkit.WebView;
 import android.widget.Toast;
 
 public class WebViewActivity extends Activity {
 
-    protected WebView myWebView;
+    private WebView myWebView;
+    private WebSettings myWebSettings;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -23,7 +26,14 @@ public class WebViewActivity extends Activity {
         setContentView(R.layout.main);
 
         myWebView = (WebView) findViewById(R.id.webview);
-        myWebView.getSettings().setJavaScriptEnabled(true);
+        myWebSettings = myWebView.getSettings();
+
+        String databasePath = this.getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath();
+
+        myWebSettings.setJavaScriptEnabled(true);
+        myWebSettings.setDatabaseEnabled(true);
+        myWebSettings.setDatabasePath(databasePath);
+
         myWebView.addJavascriptInterface(new JavascriptInterface(this), "intern");
         myWebView.setWebChromeClient(new MyWebChromeClient());
         myWebView.setScrollBarStyle(WebView.SCROLLBARS_INSIDE_OVERLAY);
@@ -97,6 +107,12 @@ public class WebViewActivity extends Activity {
         public boolean onConsoleMessage(ConsoleMessage cm) {
             Log.d(TAG, cm.sourceId() + ": Line " + cm.lineNumber() + " : " + cm.message());
             return true;
+        }
+
+        @Override
+        public void onExceededDatabaseQuota(String url, String databaseIdentifier, long currentQuota, long estimatedSize,
+            long totalUsedQuota, QuotaUpdater quotaUpdater) {
+            quotaUpdater.updateQuota(estimatedSize * 2);
         }
     }
 }
