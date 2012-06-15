@@ -16,9 +16,9 @@ import android.webkit.WebView;
 import android.widget.Toast;
 
 public class WebViewActivity extends Activity {
-
     private WebView myWebView;
     private WebSettings myWebSettings;
+    private String databasePath;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,8 +27,7 @@ public class WebViewActivity extends Activity {
 
         myWebView = (WebView) findViewById(R.id.webview);
         myWebSettings = myWebView.getSettings();
-
-        String databasePath = this.getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath();
+        databasePath = getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath();
 
         myWebSettings.setJavaScriptEnabled(true);
         myWebSettings.setDatabaseEnabled(true);
