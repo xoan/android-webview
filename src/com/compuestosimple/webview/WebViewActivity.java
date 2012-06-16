@@ -74,8 +74,6 @@ public class WebViewActivity extends Activity {
             }
         });
 
-        myWebView.setScrollBarStyle(WebView.SCROLLBARS_INSIDE_OVERLAY);
-        myWebView.setHorizontalScrollBarEnabled(false);
         myWebView.loadUrl("file:///android_asset/index.html");
     }
 

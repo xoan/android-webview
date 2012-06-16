@@ -4,14 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 <ImageView android:id="@+id/splash_view"
-    android:scaleType="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="visible"
-    android:src="@drawable/splash" />
+    android:src="@drawable/splash"
+    android:visibility="visible" />
 <WebView android:id="@+id/web_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:scrollbars="none"
     android:visibility="gone" />
 </LinearLayout>
 
