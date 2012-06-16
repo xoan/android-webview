@@ -46,16 +46,16 @@ public class WebViewActivity extends Activity {
         myWebView.addJavascriptInterface(new JavascriptInterface(), "intern");
 
         myWebView.setWebViewClient(new WebViewClient() {
-            private Animation out;
             private Animation in;
+            private Animation out;
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 if (mySplashView.getVisibility() == View.VISIBLE) {
-                    out = AnimationUtils.loadAnimation(myContext, android.R.anim.fade_out);
                     in = AnimationUtils.loadAnimation(myContext, android.R.anim.fade_in);
-                    mySplashView.startAnimation(out); mySplashView.setVisibility(View.GONE);
+                    out = AnimationUtils.loadAnimation(myContext, android.R.anim.fade_out);
                     myWebView.startAnimation(in); myWebView.setVisibility(View.VISIBLE);
+                    mySplashView.startAnimation(out); mySplashView.setVisibility(View.GONE);
                     splashVisible = false;
                 }
             }
