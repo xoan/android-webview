@@ -26,6 +26,8 @@ public class WebViewActivity extends Activity {
     private WebSettings myWebSettings;
     private String databasePath;
 
+    private boolean splashVisible = true;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +56,7 @@ public class WebViewActivity extends Activity {
                     in = AnimationUtils.loadAnimation(myContext, android.R.anim.fade_in);
                     mySplashView.startAnimation(out); mySplashView.setVisibility(View.GONE);
                     myWebView.startAnimation(in); myWebView.setVisibility(View.VISIBLE);
+                    splashVisible = false;
                 }
             }
         });
@@ -105,10 +108,14 @@ public class WebViewActivity extends Activity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        event.startTracking();
+
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            event.startTracking();
+            return true;
+        } else if (keyCode == KeyEvent.KEYCODE_MENU && splashVisible) {
             return true;
         }
+
         return super.onKeyDown(keyCode, event);
     }
 
@@ -117,7 +124,10 @@ public class WebViewActivity extends Activity {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             myWebView.loadUrl("javascript:extern.fireDOMEvent('backbutton');");
             return true;
+        } else if (keyCode == KeyEvent.KEYCODE_MENU && splashVisible) {
+            return true;
         }
+
         return super.onKeyUp(keyCode, event);
     }
 
