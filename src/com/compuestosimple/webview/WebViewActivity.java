@@ -4,18 +4,24 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebStorage.QuotaUpdater;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 public class WebViewActivity extends Activity {
+    private Context myContext;
+    private View mySplashView;
     private WebView myWebView;
     private WebSettings myWebSettings;
     private String databasePath;
@@ -25,7 +31,9 @@ public class WebViewActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        myWebView = (WebView) findViewById(R.id.webview);
+        myContext = this;
+        mySplashView = (View) findViewById(R.id.splash_view);
+        myWebView = (WebView) findViewById(R.id.web_view);
         myWebSettings = myWebView.getSettings();
         databasePath = getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath();
 
@@ -33,9 +41,11 @@ public class WebViewActivity extends Activity {
         myWebSettings.setDatabaseEnabled(true);
         myWebSettings.setDatabasePath(databasePath);
 
-        myWebView.addJavascriptInterface(new JavascriptInterface(this), "intern");
+        myWebView.addJavascriptInterface(new JavascriptInterface(), "intern");
+        myWebView.setWebViewClient(new MyWebViewClient());
         myWebView.setWebChromeClient(new MyWebChromeClient());
         myWebView.setScrollBarStyle(WebView.SCROLLBARS_INSIDE_OVERLAY);
+        myWebView.setHorizontalScrollBarEnabled(false);
         myWebView.loadUrl("file:///android_asset/index.html");
     }
 
@@ -84,18 +94,24 @@ public class WebViewActivity extends Activity {
     }
 
     private class JavascriptInterface {
-        private Context myContext;
-
-        JavascriptInterface(Context context) {
-            myContext = context;
-        }
-
         public void finish() {
             ((Activity) myContext).finish();
         }
 
         public void toast(String message) {
             Toast.makeText(myContext, message, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private class MyWebViewClient extends WebViewClient {
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            if (mySplashView.getVisibility() == View.VISIBLE) {
+                Animation out = AnimationUtils.loadAnimation(myContext, android.R.anim.fade_out);
+                Animation in = AnimationUtils.loadAnimation(myContext, android.R.anim.fade_in);
+                mySplashView.startAnimation(out); mySplashView.setVisibility(View.GONE);
+                myWebView.startAnimation(in); myWebView.setVisibility(View.VISIBLE);
+            }
         }
     }
 
