@@ -61,10 +61,10 @@ public class WebViewActivity extends Activity {
         String item_id;
 
         switch (item.getItemId()) {
-            case R.id.close:
+            case R.id.close_item:
                 item_id = "close";
             break;
-            case R.id.help:
+            case R.id.help_item:
                 item_id = "help";
             break;
             default:
