@@ -6,86 +6,11 @@
 
     <title>WebView</title>
 
-    <style type="text/css" charset="utf-8">
-        a {
-            font-weight: bold;
-            color: #fff;
-            background-color: #000;
-            text-decoration: none;
-            border-radius: 2px;
-            padding: 0 2px;
-        }
-
-        .help {
-            font-size: small;
-            color: #3a87ad;
-            background-color: #d9edf7;
-            padding: 0px 14px;
-            border: 1px solid #bce8f1;
-            border-radius: 4px;
-        }
-
-        .hide {
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" charset="utf-8" href="css/webview.css">
 
     <script type="text/javascript" charset="utf-8" src="js/xui-2.3.2.js"></script>
     <script type="text/javascript" charset="utf-8" src="js/html5sql-0.9.2.js"></script>
-    <script type="text/javascript" charset="utf-8">
-        xui.extend({
-            data: function(attribute, val) {
-                if (arguments.length == 2) {
-                    return this.each(function(el) {
-                        if (el.setAttribute) {
-                            el.setAttribute('data-' + attribute, val);
-                        }
-                    });
-                } else {
-                    var attrs = [];
-                    this.each(function(el) {
-                        if (el.getAttribute && el.getAttribute('data-' + attribute)) {
-                            attrs.push(el.getAttribute('data-' + attribute));
-                        }
-                    });
-                    return attrs;
-                }
-            }
-        });
-
-        xui.ready(function() {
-            x$(document).on("backbutton", function(event) {
-                intern.finish();
-            });
-
-            x$(document).on("menuitem", function(event) {
-                switch (event.data.item_id) {
-                    case "close":
-                        intern.finish();
-                    break;
-                    case "help":
-                        x$(".help").toggleClass("hide");
-                    break;
-                }
-            });
-
-            x$("a.toast").on("click", function(event) {
-                intern.toast(x$(this).data("message"));
-                event.preventDefault();
-            });
-
-            x$("a.exit").on("click", function(event) {
-                intern.finish();
-                event.preventDefault();
-            });
-        });
-
-        var extern = {
-            fireDOMEvent: function(event, data) {
-                x$(document).fire(event, data);
-            }
-        };
-    </script>
+    <script type="text/javascript" charset="utf-8" src="js/webview.js"></script>
 </head>
 <body>
     <section>

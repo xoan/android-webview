@@ -1,0 +1,21 @@
+a {
+    font-weight: bold;
+    color: #fff;
+    background-color: #000;
+    text-decoration: none;
+    border-radius: 2px;
+    padding: 0 2px;
+}
+
+.help {
+    font-size: small;
+    color: #3a87ad;
+    background-color: #d9edf7;
+    padding: 0px 14px;
+    border: 1px solid #bce8f1;
+    border-radius: 4px;
+}
+
+.hide {
+    display: none;
+}
