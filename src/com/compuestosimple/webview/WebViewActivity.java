@@ -32,7 +32,7 @@ public class WebViewActivity extends Activity {
         setContentView(R.layout.main);
 
         myContext = this;
-        mySplashView = (View) findViewById(R.id.splash_view);
+        mySplashView = findViewById(R.id.splash_view);
         myWebView = (WebView) findViewById(R.id.web_view);
         myWebSettings = myWebView.getSettings();
         databasePath = getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath();
@@ -104,11 +104,14 @@ public class WebViewActivity extends Activity {
     }
 
     private class MyWebViewClient extends WebViewClient {
+        private Animation out;
+        private Animation in;
+
         @Override
         public void onPageFinished(WebView view, String url) {
             if (mySplashView.getVisibility() == View.VISIBLE) {
-                Animation out = AnimationUtils.loadAnimation(myContext, android.R.anim.fade_out);
-                Animation in = AnimationUtils.loadAnimation(myContext, android.R.anim.fade_in);
+                out = AnimationUtils.loadAnimation(myContext, android.R.anim.fade_out);
+                in = AnimationUtils.loadAnimation(myContext, android.R.anim.fade_in);
                 mySplashView.startAnimation(out); mySplashView.setVisibility(View.GONE);
                 myWebView.startAnimation(in); myWebView.setVisibility(View.VISIBLE);
             }
