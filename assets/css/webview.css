@@ -1,7 +1,15 @@
+body {
+    color: #333;
+}
+
+h1 {
+    margin-top: 0;
+}
+
 a {
     font-weight: bold;
     color: #fff;
-    background-color: #000;
+    background-color: #333;
     text-decoration: none;
     border-radius: 2px;
     padding: 0 2px;
@@ -9,10 +17,10 @@ a {
 
 .help {
     font-size: small;
-    color: #3a87ad;
-    background-color: #d9edf7;
+    color: #c09853;
+    background-color: #fcf8e3;
     padding: 0px 14px;
-    border: 1px solid #bce8f1;
+    border: 1px solid #fbeed5;
     border-radius: 4px;
 }
 
