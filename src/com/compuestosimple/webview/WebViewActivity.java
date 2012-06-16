@@ -42,8 +42,38 @@ public class WebViewActivity extends Activity {
         myWebSettings.setDatabasePath(databasePath);
 
         myWebView.addJavascriptInterface(new JavascriptInterface(), "intern");
-        myWebView.setWebViewClient(new MyWebViewClient());
-        myWebView.setWebChromeClient(new MyWebChromeClient());
+
+        myWebView.setWebViewClient(new WebViewClient() {
+            private Animation out;
+            private Animation in;
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                if (mySplashView.getVisibility() == View.VISIBLE) {
+                    out = AnimationUtils.loadAnimation(myContext, android.R.anim.fade_out);
+                    in = AnimationUtils.loadAnimation(myContext, android.R.anim.fade_in);
+                    mySplashView.startAnimation(out); mySplashView.setVisibility(View.GONE);
+                    myWebView.startAnimation(in); myWebView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        myWebView.setWebChromeClient(new WebChromeClient() {
+            private static final String TAG = "WebView";
+
+            @Override
+            public boolean onConsoleMessage(ConsoleMessage cm) {
+                Log.d(TAG, cm.sourceId() + ": Line " + cm.lineNumber() + " : " + cm.message());
+                return true;
+            }
+
+            @Override
+            public void onExceededDatabaseQuota(String url, String databaseIdentifier, long currentQuota, long estimatedSize,
+                long totalUsedQuota, QuotaUpdater quotaUpdater) {
+                quotaUpdater.updateQuota(estimatedSize * 2);
+            }
+        });
+
         myWebView.setScrollBarStyle(WebView.SCROLLBARS_INSIDE_OVERLAY);
         myWebView.setHorizontalScrollBarEnabled(false);
         myWebView.loadUrl("file:///android_asset/index.html");
@@ -100,37 +130,6 @@ public class WebViewActivity extends Activity {
 
         public void toast(String message) {
             Toast.makeText(myContext, message, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private class MyWebViewClient extends WebViewClient {
-        private Animation out;
-        private Animation in;
-
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            if (mySplashView.getVisibility() == View.VISIBLE) {
-                out = AnimationUtils.loadAnimation(myContext, android.R.anim.fade_out);
-                in = AnimationUtils.loadAnimation(myContext, android.R.anim.fade_in);
-                mySplashView.startAnimation(out); mySplashView.setVisibility(View.GONE);
-                myWebView.startAnimation(in); myWebView.setVisibility(View.VISIBLE);
-            }
-        }
-    }
-
-    private class MyWebChromeClient extends WebChromeClient {
-        private static final String TAG = "WebView";
-
-        @Override
-        public boolean onConsoleMessage(ConsoleMessage cm) {
-            Log.d(TAG, cm.sourceId() + ": Line " + cm.lineNumber() + " : " + cm.message());
-            return true;
-        }
-
-        @Override
-        public void onExceededDatabaseQuota(String url, String databaseIdentifier, long currentQuota, long estimatedSize,
-            long totalUsedQuota, QuotaUpdater quotaUpdater) {
-            quotaUpdater.updateQuota(estimatedSize * 2);
         }
     }
 }
